@@ -60,7 +60,7 @@ namespace Fantasy.Frontend.Repositories
         public async Task<HttpResponseWrapper<object>> PutAsync<T>(string url, T model)
         {
             var messageJson = JsonSerializer.Serialize(model);
-            var messageContent = new StringContent(messageJson, Encoding.UTF8, "aplication/json");
+            var messageContent = new StringContent(messageJson, Encoding.UTF8, "application/json");
             var responseHttp = await _httpClient.PutAsync(url, messageContent);
             return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
@@ -68,7 +68,7 @@ namespace Fantasy.Frontend.Repositories
         public async Task<HttpResponseWrapper<TActionResponse>> PutAsync<T, TActionResponse>(string url, T model)
         {
             var messageJson = JsonSerializer.Serialize(model);
-            var messageContent = new StringContent(messageJson, Encoding.UTF8, "aplication/json");
+            var messageContent = new StringContent(messageJson, Encoding.UTF8, "application/json");
             var responseHttp = await _httpClient.PutAsync(url, messageContent);
             if (responseHttp.IsSuccessStatusCode)
             {
