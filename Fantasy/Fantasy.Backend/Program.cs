@@ -1,4 +1,8 @@
 using Fantasy.Backend.Data;
+using Fantasy.Backend.Repositories.Implementations;
+using Fantasy.Backend.Repositories.Interfaces;
+using Fantasy.Backend.UnitOfWork.Interfaces;
+using Fantasy.Backend.UnitsOfWork.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +14,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
+
+//Inyecciones de genericos
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 
 var app = builder.Build();
 

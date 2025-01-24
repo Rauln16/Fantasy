@@ -8,7 +8,7 @@ namespace Fantasy.Backend.Repositories.Implementations;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     private readonly DataContext _context;
-    private readonly DbSet<T> _entity;
+    public readonly DbSet<T> _entity;
 
     public GenericRepository(DataContext context)
     {
@@ -24,7 +24,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             await _context.SaveChangesAsync();
             return new ActionResponse<T>
             {
-                WasSucces = true,
+                WasSuccess = true,
                 Result = entity
             };
         }
@@ -42,7 +42,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         return new ActionResponse<T>
         {
-            WasSucces = false,
+            WasSuccess = false,
             Message = exception.Message
         };
     }
@@ -51,7 +51,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         return new ActionResponse<T>
         {
-            WasSucces = false,
+            WasSuccess = false,
             Message = "ERR003"
         };
     }
@@ -63,7 +63,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         {
             return new ActionResponse<T>
             {
-                WasSucces = false,
+                WasSuccess = false,
                 Message = "ERR001"
             };
         }
@@ -74,14 +74,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             await _context.SaveChangesAsync();
             return new ActionResponse<T>
             {
-                WasSucces = true,
+                WasSuccess = true,
             };
         }
         catch
         {
             return new ActionResponse<T>
             {
-                WasSucces = false,
+                WasSuccess = false,
                 Message = "ERR002"
             };
         }
@@ -89,19 +89,19 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public virtual async Task<ActionResponse<T>> GetAsync(int id)
     {
-        var row = await _entity.FindAsync<T>(id);
-        if (row == null)
+        var row = await _entity.FindAsync(id);
+        if (row != null)
         {
             return new ActionResponse<T>
             {
-                WasSucces = true,
+                WasSuccess = true,
                 Result = row
             };
         }
         return new ActionResponse<T>
         {
-            WasSucces = true,
-            Result = row
+            WasSuccess = false,
+            Message = "ERR001"
         };
     }
 
@@ -109,13 +109,30 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         return new ActionResponse<IEnumerable<T>>
         {
-            WasSucces = true,
+            WasSuccess = true,
             Result = await _entity.ToListAsync()
         };
     }
 
     public virtual async Task<ActionResponse<T>> UpdateAsync(T entity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
+            return new ActionResponse<T>
+            {
+                WasSuccess = true,
+                Result = entity
+            };
+        }
+        catch (DbUpdateException)
+        {
+            return DbUpdateExceptionActionResponse();
+        }
+        catch (Exception exception)
+        {
+            return ExceptionActionResponse(exception);
+        }
     }
 }
