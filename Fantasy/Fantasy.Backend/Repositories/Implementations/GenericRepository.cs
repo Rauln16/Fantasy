@@ -64,7 +64,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             return new ActionResponse<T>
             {
                 WasSuccess = false,
-                Message = "ERR001"
+                Message = "Elemento no encontrado"
             };
         }
 
@@ -82,7 +82,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             return new ActionResponse<T>
             {
                 WasSuccess = false,
-                Message = "ERR002"
+                Message = "No se puede eliminar paises de los que dependan equipos"
             };
         }
     }
@@ -101,7 +101,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return new ActionResponse<T>
         {
             WasSuccess = false,
-            Message = "ERR001"
+            Message = "No se pueden añadir elementos repetidos"
         };
     }
 

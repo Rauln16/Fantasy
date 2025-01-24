@@ -16,6 +16,6 @@ public class Team
     public string Name { get; set; } = null!;
 
     public string? Image { get; set; }
-    public Country Country { get; set; } = null!;
+    public Country? Country { get; set; }
     public int CountryId { get; set; }
 }
