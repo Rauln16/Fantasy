@@ -3,15 +3,15 @@ using Fantasy.Frontend.Repositories;
 using Fantasy.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 
-namespace Fantasy.Frontend.Pages.Countries
+namespace Fantasy.Frontend.Pages.Teams
 {
-    public partial class CountriesIndex
+    public partial class TeamsIndex
     {
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
-        private List<Country>? Countries { get; set; }
+        private List<Team>? Teams { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -20,22 +20,22 @@ namespace Fantasy.Frontend.Pages.Countries
 
         private async Task LoadAsync()
         {
-            var responseHttp = await Repository.GetAsync<List<Country>>("api/countries");
+            var responseHttp = await Repository.GetAsync<List<Team>>("api/teams");
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-            Countries = responseHttp.Response;
+            Teams = responseHttp.Response;
         }
 
-        private async Task DeleteAsync(Country country)
+        private async Task DeleteAsync(Team team)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmacion",
-                Text = string.Format("¿Esta seguro? Se eliminará: ", country.Name),
+                Text = string.Format("¿Esta seguro?"),
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
                 CancelButtonText = "Cancelar"
@@ -47,7 +47,7 @@ namespace Fantasy.Frontend.Pages.Countries
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync($"api/countries/{country.Id}");
+            var responseHttp = await Repository.DeleteAsync($"api/teams/{team.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)

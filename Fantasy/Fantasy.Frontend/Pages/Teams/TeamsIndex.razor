@@ -1,0 +1,39 @@
+﻿@page "/teams"
+
+<h3>Equipos</h3>
+
+<div>
+    <a class="btn btn-primary" href="/countries/create">Nuevo equipo</a>
+</div>
+
+<GenericList MyList="Teams">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Equipo</th>
+                    <th>Pais</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var team in Teams!)
+                {
+                    <tr>
+                        <td>
+                            @team.Name
+                        </td>
+                        <td>
+                            @team.Country!.Name
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" href="/teams/edit/@team.Id">Editar</a>
+                            <a class="btn btn-danger" @onclick=@(() => DeleteAsync(team))>Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>
+
+

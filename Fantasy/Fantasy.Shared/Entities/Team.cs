@@ -7,12 +7,19 @@ using System.Threading.Tasks;
 
 namespace Fantasy.Shared.Entities;
 
+public static class ValidationMessages
+{
+    public static string MaxLengthErrorMessage => "El nombre no puede ser más largo de 100 caracteres";
+    public static string RequiredErrorMessage => "Campo requerido";
+}
+
 public class Team
 {
     public int Id { get; set; }
 
-    [MaxLength(100)]
-    [Required]
+    [Display(Name = "Equipo")]
+    [MaxLength(100, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ValidationMessages))]
+    [Required(ErrorMessageResourceName = "RequiredErrorMessage", ErrorMessageResourceType = typeof(ValidationMessages))]
     public string Name { get; set; } = null!;
 
     public string? Image { get; set; }

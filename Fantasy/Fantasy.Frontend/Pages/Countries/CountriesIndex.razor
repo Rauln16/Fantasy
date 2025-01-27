@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th>País</th>
-                    <th></th>
+                    <th>Nº Equipos</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +21,9 @@
                     <tr>
                         <td>
                             @country.Name
+                        </td>
+                        <td>
+                            @country.TeamsCount
                         </td>
                         <td>
                             <a class="btn btn-warning" href="/countries/edit/@country.Id">Editar</a>
