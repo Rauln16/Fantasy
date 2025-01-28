@@ -1,4 +1,5 @@
 ﻿using Fantasy.Backend.Data;
+using Fantasy.Backend.Helpers;
 using Fantasy.Backend.Repositories.Interfaces;
 using Fantasy.Shared.DTOs;
 using Fantasy.Shared.Entities;
@@ -128,6 +129,7 @@ public class TeamsRepository : GenericRepository<Team>, ITeamsRepository
         }
 
         currentTeam.Country = teamDTO.Country;
+        currentTeam.CountryId = teamDTO.CountryId;
         currentTeam.Name = teamDTO.Name;
 
         _context.Update(currentTeam);
@@ -156,5 +158,41 @@ public class TeamsRepository : GenericRepository<Team>, ITeamsRepository
                 Message = ex.Message
             };
         }
+    }
+
+    public override async Task<ActionResponse<IEnumerable<Team>>> GetAsync(PaginationDTO paginationDTO)
+    {
+        var queryable = _context.Teams
+            .Include(x => x.Country)
+            .AsQueryable();
+        if (!string.IsNullOrWhiteSpace(paginationDTO.Filter))
+        {
+            queryable = queryable.Where(x => x.Country!.Name.ToLower().Contains(paginationDTO.Filter.ToLower()));
+        }
+
+        return new ActionResponse<IEnumerable<Team>>
+        {
+            WasSuccess = true,
+            Result = await queryable
+                .OrderBy(x => x.Name)
+                .Paginate(paginationDTO)
+                .ToListAsync()
+        };
+    }
+
+    public async Task<ActionResponse<int>> GetTotatlRecordsAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Teams.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.Country!.Name.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+        double count = await queryable.CountAsync();
+        return new ActionResponse<int>
+        {
+            WasSuccess = true,
+            Result = (int)count,
+        };
     }
 }

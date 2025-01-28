@@ -1,0 +1,32 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"/>
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <div class="mb-3">
+        <label>Equipo</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@TeamDTO.Name"/>
+            <ValidationMessage For="@(() => TeamDTO.Name)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label>Pais:</label>
+        <div>
+            <select class="form-select" @bind="@TeamDTO.CountryId">
+                <option value="0">Elige pais</option>
+                @if (countries is not null)
+                {
+                    @foreach (var country in countries)
+                    {
+                        <option value="@country.Id">@country.Name</option>
+                    }
+                } 
+            </select>
+            <ValidationMessage For="@(() => TeamDTO.CountryId)"/>
+        </div>  
+    </div>
+    <button class="btn btn-primary" type="submit">Enviar</button>
+    <button class=" btn btn-success" @onclick="ReturnAction">Volver</button>
+</EditForm>
+
+
+

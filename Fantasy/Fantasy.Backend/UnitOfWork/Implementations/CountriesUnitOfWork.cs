@@ -1,6 +1,7 @@
 ﻿using Fantasy.Backend.Repositories.Interfaces;
 using Fantasy.Backend.UnitOfWork.Interfaces;
 using Fantasy.Backend.UnitsOfWork.Implementations;
+using Fantasy.Shared.DTOs;
 using Fantasy.Shared.Entities;
 using Fantasy.Shared.Responses;
 
@@ -19,5 +20,9 @@ public class CountriesUnitOfWork : GenericUnitOfWork<Country>, ICountriesUnitOfW
 
     public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync() => await _countriesRepository.GetAsync();
 
+    public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO paginationDTO) => await _countriesRepository.GetAsync(paginationDTO);
+
     public async Task<IEnumerable<Country>> GetComboAsync() => await _countriesRepository.GetComboAsync();
+
+    public async Task<ActionResponse<int>> GetTotatlRecordsAsync(PaginationDTO pagination) => await _countriesRepository.GetTotatlRecordsAsync(pagination);
 }

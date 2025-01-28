@@ -15,4 +15,8 @@ public interface ITeamsUnitOfWork
     Task<ActionResponse<Team>> GetAsync(int id);
 
     Task<ActionResponse<IEnumerable<Team>>> GetAsync();
+
+    Task<ActionResponse<int>> GetTotatlRecordsAsync(PaginationDTO pagination);
+
+    Task<ActionResponse<IEnumerable<Team>>> GetAsync(PaginationDTO paginationDTO);
 }

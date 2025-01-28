@@ -1,4 +1,5 @@
-﻿using Fantasy.Shared.Responses;
+﻿using Fantasy.Shared.DTOs;
+using Fantasy.Shared.Responses;
 
 namespace Fantasy.Backend.UnitOfWork.Interfaces
 {
@@ -13,5 +14,9 @@ namespace Fantasy.Backend.UnitOfWork.Interfaces
         Task<ActionResponse<T>> DeleteAsync(int id);
 
         Task<ActionResponse<T>> UpdateAsync(T entity);
+
+        Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO paginationDTO);
+
+        Task<ActionResponse<int>> GetTotatlRecordsAsync();
     }
 }
