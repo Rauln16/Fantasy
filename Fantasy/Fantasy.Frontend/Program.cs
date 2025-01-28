@@ -4,6 +4,7 @@ using Fantasy.Frontend.Repositories;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 using System.Reflection.Emit;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -14,5 +15,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddLocalization();
 builder.Services.AddSweetAlert2();
+builder.Services.AddMudServices();
 
 await builder.Build().RunAsync();
