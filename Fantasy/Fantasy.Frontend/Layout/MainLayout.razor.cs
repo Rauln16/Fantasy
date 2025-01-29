@@ -1,5 +1,7 @@
+using Fantasy.Shared.Resources;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
-using System.Reflection.Metadata;
 
 namespace Fantasy.Frontend.Layout;
 
@@ -7,7 +9,6 @@ public partial class MainLayout
 {
     private bool _drawerOpen = true;
     private string _icon = Icons.Material.Filled.DarkMode;
-
     private bool _darkMode { get; set; } = true;
 
     private void DrawerToggle()
