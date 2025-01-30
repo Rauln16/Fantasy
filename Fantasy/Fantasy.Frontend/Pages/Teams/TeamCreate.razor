@@ -1,5 +1,5 @@
-﻿@page "/teams/create"
-
-<h3>Crear Equipo</h3>
-
-<TeamsForm @ref="teamForm" TeamDTO="teamDTO" OnValidSubmit="CreateAsync" ReturnAction="Return"/>
+﻿<MudDialog>
+    <DialogContent>
+        <TeamsForm @ref="teamForm" TeamDTO="teamDTO" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+    </DialogContent>
+</MudDialog>

@@ -1,12 +1,12 @@
-﻿@page "/teams/edit/{Id:int}"
-
-<h3>Editar Equipo</h3>
-
-@if(teamDTO is null)
+﻿@if(teamDTO is null)
 {
     <Loading/>
 }
 else
 {
-    <TeamsForm @ref="teamForm" TeamDTO="teamDTO" OnValidSubmit="EditAsync" ReturnAction="Return"/>
+    <MudDialog>
+        <DialogContent>
+            <TeamsForm @ref="teamForm" TeamDTO="teamDTO" OnValidSubmit="EditAsync" ReturnAction="Return" />
+        </DialogContent>
+    </MudDialog>
 }

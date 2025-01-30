@@ -1,31 +1,39 @@
-﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"/>
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
 
 <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
-    <div class="mb-3">
-        <label>Equipo</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@TeamDTO.Name"/>
-            <ValidationMessage For="@(() => TeamDTO.Name)" />
-        </div>
-    </div>
-    <div class="mb-3">
-        <label>Pais:</label>
-        <div>
-            <select class="form-select" @bind="@TeamDTO.CountryId">
-                <option value="0">Elige pais</option>
-                @if (countries is not null)
-                {
-                    @foreach (var country in countries)
-                    {
-                        <option value="@country.Id">@country.Name</option>
-                    }
-                } 
-            </select>
-            <ValidationMessage For="@(() => TeamDTO.CountryId)"/>
-        </div>  
-    </div>
-    <button class="btn btn-primary" type="submit">Enviar</button>
-    <button class=" btn btn-success" @onclick="ReturnAction">Volver</button>
+    <DataAnnotationsValidator />
+
+    <MudTextField Label="Equipos"
+                  @bind-Value="@TeamDTO.Name"
+                  For="@(() => TeamDTO.Name)"
+                  Class="mb-4" />
+
+    <MudAutocomplete T="Country"
+                        Label=Pais
+                        Placeholder="Selecciona un pais"
+                        SearchFunc="SearchCountry"
+                        Value="@selectedCountry"
+                        ValueChanged="CountryChanged"
+                        ToStringFunc="@(e=> e==null?null : $"{e.Name}")"
+                        Class="mb-4">
+        <ItemTemplate Context="itemContext">
+            @itemContext.Name
+        </ItemTemplate>
+    </MudAutocomplete>
+
+    <MudButton Variant="Variant.Outlined"
+               StartIcon="@Icons.Material.Filled.ArrowBack"
+               Color="Color.Info"
+               OnClick="ReturnAction">
+        Volver
+    </MudButton>
+
+    <MudButton Variant="Variant.Outlined"
+               StartIcon="@Icons.Material.Filled.Check"
+               Color="Color.Primary"
+               ButtonType="ButtonType.Submit">
+        Guardar cambios
+    </MudButton>
 </EditForm>
 
 

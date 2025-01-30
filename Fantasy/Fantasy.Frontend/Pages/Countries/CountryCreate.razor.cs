@@ -4,6 +4,7 @@ using Fantasy.Shared.Entities;
 using Fantasy.Shared.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using MudBlazor;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fantasy.Frontend.Pages.Countries
@@ -14,7 +15,7 @@ namespace Fantasy.Frontend.Pages.Countries
         private Country country = new();
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [Inject] private ISnackbar SnackBar { get; set; } = null!;
 
         private async Task CreateAsync()
         {
@@ -22,18 +23,11 @@ namespace Fantasy.Frontend.Pages.Countries
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message);
+                SnackBar.Add(message!, Severity.Error);
                 return;
             }
             Return();
-            var toast = SweetAlertService.Mixin(new SweetAlertOptions
-            {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
-            });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Guardado correctamente");
+            SnackBar.Add("Registro creado correctamente", Severity.Success);
         }
 
         private void Return()

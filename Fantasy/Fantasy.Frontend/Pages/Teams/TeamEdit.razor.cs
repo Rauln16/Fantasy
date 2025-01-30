@@ -2,8 +2,10 @@ using CurrieTechnologies.Razor.SweetAlert2;
 using Fantasy.Frontend.Repositories;
 using Fantasy.Shared.DTOs;
 using Fantasy.Shared.Entities;
+using Fantasy.Shared.Resources;
 using Microsoft.AspNetCore.Components;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Localization;
+using MudBlazor;
 
 namespace Fantasy.Frontend.Pages.Teams;
 
@@ -11,16 +13,18 @@ public partial class TeamEdit
 {
     private TeamDTO? teamDTO;
     private TeamsForm? teamForm;
+    private Country selectedCountry = new();
 
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
     [Inject] private IRepository Repository { get; set; } = null!;
-    [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+    [Inject] private ISnackbar Snackbar { get; set; } = null!;
 
     [Parameter] public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         var responseHttp = await Repository.GetAsync<Team>($"api/teams/{Id}");
+
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -30,7 +34,7 @@ public partial class TeamEdit
             else
             {
                 var messageError = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+                Snackbar.Add(messageError!, Severity.Error);
             }
         }
         else
@@ -39,31 +43,27 @@ public partial class TeamEdit
             teamDTO = new TeamDTO()
             {
                 Id = team!.Id,
-                Name = team.Name,
-                CountryId = team.CountryId,
+                Name = team!.Name,
+                Image = team.Image,
+                CountryId = team.CountryId
             };
+            selectedCountry = team.Country!;
         }
     }
 
     private async Task EditAsync()
     {
         var responseHttp = await Repository.PutAsync("api/teams/full", teamDTO);
+
         if (responseHttp.Error)
         {
             var mensajeError = await responseHttp.GetErrorMessageAsync();
-            await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            Snackbar.Add(mensajeError!, Severity.Error);
             return;
         }
 
         Return();
-        var toast = SweetAlertService.Mixin(new SweetAlertOptions()
-        {
-            Toast = true,
-            Position = SweetAlertPosition.BottomEnd,
-            ShowConfirmButton = true,
-            Timer = 3000
-        });
-        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Elemento guardado");
+        Snackbar.Add("Registro guardado", Severity.Success);
     }
 
     private void Return()

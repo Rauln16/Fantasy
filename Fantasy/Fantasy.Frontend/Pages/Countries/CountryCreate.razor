@@ -1,7 +1,7 @@
-﻿@page "/countries/create"
-
-<h3>Crear pais</h3>
-
-<CountriesForm @ref="countryForm" Country="country" OnValidSubmit="CreateAsync" ReturnAction="Return"/>
+﻿<MudDialog>
+    <DialogContent>
+        <CountriesForm @ref="countryForm" Country="country" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+    </DialogContent>
+</MudDialog>
 
 
