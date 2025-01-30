@@ -24,7 +24,7 @@ namespace Fantasy.Backend.Controllers
             var response = await _countriesUnitOfWork.GetAsync(pagination);
             if (response.WasSuccess)
             {
-                return Ok(response);
+                return Ok(response.Result);
             }
             return BadRequest();
         }
