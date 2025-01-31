@@ -1,4 +1,6 @@
-﻿@page "/teams"
+﻿@using Microsoft.AspNetCore.Authorization
+@page "/teams"
+@attribute [Authorize(Roles = "Admin")]
 
 @if (loading)
 {

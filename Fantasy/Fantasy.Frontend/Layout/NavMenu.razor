@@ -1,9 +1,15 @@
 ﻿<MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Rounded.Home">Inicio</MudNavLink>
     <MudDivider />
-    <MudNavLink Href="/countries" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Public">Paises</MudNavLink>
-    <MudDivider />
-    <MudNavLink Href="/teams" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Groups">Equipos</MudNavLink>
-    <MudDivider />
+
+    <AuthorizeView Roles="Admin">
+        <Authorized>
+            <MudNavLink Href="/countries" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Public">Paises</MudNavLink>
+            <MudDivider />
+            <MudNavLink Href="/teams" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Groups">Equipos</MudNavLink>
+            <MudDivider />
+        </Authorized>
+    </AuthorizeView>
+    
     <MudNavLink Href="/about" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Info">About</MudNavLink>
 </MudNavMenu>

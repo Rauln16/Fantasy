@@ -9,7 +9,7 @@ namespace Fantasy.Shared.Entities;
 
 public static class ValidationMessages
 {
-    public static string MaxLengthErrorMessage => "El nombre no puede ser más largo de 100 caracteres";
+    public static string MaxLengthErrorMessage => "El nombre no puede ser tan largo";
     public static string RequiredErrorMessage => "Campo requerido";
 }
 

@@ -1,4 +1,7 @@
-﻿@page "/countries"
+﻿@using Microsoft.AspNetCore.Authorization
+@page "/countries"
+@attribute [Authorize(Roles = "Admin")]
+
 
 @if (loading)
 {
